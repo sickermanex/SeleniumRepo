@@ -7,7 +7,9 @@ import static org.junit.Assert.*;
 import static org.hamcrest.CoreMatchers.*;
 import org.openqa.selenium.*;
 import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
 public class DeleteMeeting {
   private WebDriver driver;
@@ -24,16 +26,48 @@ public class DeleteMeeting {
 
   @Test
   public void testDeleteMeeting() throws Exception {
-    driver.get(baseUrl + "/tablet/#/schedule");
-    driver.findElement(By.cssSelector("span.vis-item-content")).click();
-    driver.findElement(By.cssSelector("div.vis-item-content")).click();
-    driver.findElement(By.xpath("//div[@id='timelinePanel']/rm-vis/div/div[4]/div/div/div[2]/div/div")).click();
-    driver.findElement(By.xpath("//div[@id='timelinePanel']/rm-vis/div/div[4]/div/div/div[2]/div/div")).click();
-    driver.findElement(By.xpath("//button[3]")).click();
-    driver.findElement(By.xpath("//input[@type='password']")).clear();
-    driver.findElement(By.xpath("//input[@type='password']")).sendKeys("Control123");
-    driver.findElement(By.xpath("(//button[@type='button'])[2]")).click();
-    driver.findElement(By.cssSelector("i.fa.fa-home")).click();
+	  driver.get(baseUrl + "/tablet/#/register");	    
+	  driver.findElement(By.id("service-url-input")).clear();
+	  driver.findElement(By.id("service-url-input")).sendKeys("http://172.20.208.105:4040");
+	  driver.findElement(By.id("username")).clear();
+	  driver.findElement(By.id("username")).sendKeys("atxrm\\elver");
+	  driver.findElement(By.id("password")).clear();
+	  driver.findElement(By.id("password")).sendKeys("Control123");
+	  driver.findElement(By.xpath("//div[@type='submit']")).click();
+	  driver.findElement(By.xpath("//div[@type='button']")).click();
+	  driver.findElement(By.xpath("//section[@id='rm-account-status']/div[3]/div[2]/div/rm-select-item/div/div[2]/div/a")).click();
+	  driver.findElement(By.cssSelector("button.btn.btn-primary")).click();
+	  	
+	  
+      driver.get(baseUrl + "/tablet/#/schedule");    
+      (new WebDriverWait(driver, 10))
+  	  .until(
+  			  ExpectedConditions.
+  			  elementToBeClickable(driver.findElement(By.xpath("//div[@id='timelinePanel']/rm-vis/div/div[4]/div/div/div[2]/div/div")))
+  			  );
+	  driver.findElement(By.xpath("//div[@id='timelinePanel']/rm-vis/div/div[4]/div/div/div[2]/div/div")).click();
+	  
+	  (new WebDriverWait(driver, 5))
+	  .until(
+			  ExpectedConditions.
+			  elementToBeClickable(driver.findElement(By.xpath("//button[contains(.,'Remove')]")))
+			  );
+	  driver.findElement(By.xpath("//button[contains(.,'Remove')]")).click();
+	  
+	  (new WebDriverWait(driver, 5))
+	  .until(
+			  ExpectedConditions.
+			  visibilityOf(driver.findElement(By.xpath("//input[@type='password']")))
+			  );
+      driver.findElement(By.xpath("//input[@type='password']")).clear();
+      driver.findElement(By.xpath("//input[@type='password']")).sendKeys("Control123");
+      
+      (new WebDriverWait(driver, 10))
+	  .until(
+			  ExpectedConditions.
+			  elementToBeClickable(driver.findElement(By.xpath("(//button[@type='button'])[2]")))
+			  );
+      driver.findElement(By.xpath("(//button[@type='button'])[2]")).click();      
   }
 
   @After
