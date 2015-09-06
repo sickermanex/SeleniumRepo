@@ -7,7 +7,10 @@ import static org.junit.Assert.*;
 import static org.hamcrest.CoreMatchers.*;
 import org.openqa.selenium.*;
 import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.support.ui.ExpectedCondition;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
 public class LoginAdmin {
   private WebDriver driver;
@@ -18,19 +21,46 @@ public class LoginAdmin {
   @Before
   public void setUp() throws Exception {
     driver = new FirefoxDriver();
+    driver.manage().window().maximize();
     baseUrl = "http://172.20.208.105:4040/";
     driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
   }
 
   @Test
-  public void testLoginTablet() throws Exception {
-    driver.get(baseUrl + "/admin/#/login");
-    driver.findElement(By.id("loginUsername")).clear();
-    driver.findElement(By.id("loginUsername")).sendKeys("atxrm\\elver");
-    driver.findElement(By.id("loginPassword")).clear();
-    driver.findElement(By.id("loginPassword")).sendKeys("Control123");
-    driver.findElement(By.xpath("//button[@type='submit']")).click();
-    assertEquals("atxrm\\elver", driver.findElement(By.cssSelector("span.ng-binding")).getText());
+  public void testLoginAdmin(){
+	  driver.get(baseUrl + "/admin/#/login");
+	  
+	  (new WebDriverWait(driver, 5))
+	  .until(
+			  ExpectedConditions.
+			  visibilityOf(driver.findElement(By.id("loginUsername"))					  )
+			  );
+	  driver.findElement(By.id("loginUsername")).clear();
+	  driver.findElement(By.id("loginUsername")).sendKeys("atxrm\\elver");
+	  
+	  (new WebDriverWait(driver, 5))
+	  .until(
+			  ExpectedConditions.
+			  visibilityOf(driver.findElement(By.id("loginPassword"))					  )
+			  );
+	  driver.findElement(By.id("loginPassword")).clear();
+	  driver.findElement(By.id("loginPassword")).sendKeys("Control123");
+	  
+	  (new WebDriverWait(driver,10))
+	  .until(
+			  ExpectedConditions.
+			  elementToBeClickable(
+					  driver.findElement(By.xpath("//button[@type='submit']")
+							  ))
+			  );
+	  driver.findElement(By.xpath("//button[@type='submit']")).click();
+	  
+	  (new WebDriverWait(driver,10))
+	  .until(
+			  ExpectedConditions. 
+			  textToBePresentInElement(driver.findElement(By.cssSelector("span.ng-binding")), 
+					  "atxrm\\elver"));
+	  assertEquals("atxrm\\elver", driver.findElement(By.cssSelector("span.ng-binding")).getText());
   }
 
   @After
