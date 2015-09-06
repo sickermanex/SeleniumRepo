@@ -7,7 +7,9 @@ import static org.junit.Assert.*;
 import static org.hamcrest.CoreMatchers.*;
 import org.openqa.selenium.*;
 import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
 public class LoginTablet {
   private WebDriver driver;
@@ -25,15 +27,73 @@ public class LoginTablet {
   @Test
   public void testLoginTablet() throws Exception {
     driver.get(baseUrl + "/tablet/#/register");
+    
+    (new WebDriverWait(driver, 5))
+	  .until(
+			  ExpectedConditions.
+			  visibilityOf(driver.findElement(By.id("service-url-input"))					  )
+			  );
     driver.findElement(By.id("service-url-input")).clear();
     driver.findElement(By.id("service-url-input")).sendKeys("http://172.20.208.105:4040");
+    
+    (new WebDriverWait(driver, 5))
+	  .until(
+			  ExpectedConditions.
+			  visibilityOf(driver.findElement(By.id("username"))					  )
+			  );
     driver.findElement(By.id("username")).clear();
     driver.findElement(By.id("username")).sendKeys("atxrm\\elver");
+    
+    (new WebDriverWait(driver, 5))
+	  .until(
+			  ExpectedConditions.
+			  visibilityOf(driver.findElement(By.id("password"))					  )
+			  );
     driver.findElement(By.id("password")).clear();
-    driver.findElement(By.id("password")).sendKeys("Control123");
+    driver.findElement(By.id("password")).sendKeys("Control123");  
+    
+    (new WebDriverWait(driver,10))
+	  .until(
+			  ExpectedConditions.
+			  elementToBeClickable(
+					  driver.findElement(By.xpath("//div[@type='submit']")
+							  ))
+			  );
+    driver.findElement(By.xpath("//div[@type='submit']")).click();
+    
+    (new WebDriverWait(driver,10))
+	  .until(
+			  ExpectedConditions.
+			  elementToBeClickable(
+					  driver.findElement(By.xpath("//div[@type='button']")
+							  ))
+			  );
     driver.findElement(By.xpath("//div[@type='button']")).click();
+    
+    (new WebDriverWait(driver,10))
+	  .until(
+			  ExpectedConditions.
+			  elementToBeClickable(
+					  driver.findElement(By.xpath("//section[@id='rm-account-status']/div[3]/div[2]/div/rm-select-item/div/div[2]/div/a")
+							  ))
+			  );
     driver.findElement(By.xpath("//section[@id='rm-account-status']/div[3]/div[2]/div/rm-select-item/div/div[2]/div/a")).click();
+    
+    (new WebDriverWait(driver,10))
+	  .until(
+			  ExpectedConditions.
+			  elementToBeClickable(
+					  driver.findElement(By.cssSelector("button.btn.btn-primary")
+							  ))
+			  );
     driver.findElement(By.cssSelector("button.btn.btn-primary")).click();
+    
+    (new WebDriverWait(driver,10))
+	  .until(
+			  ExpectedConditions. 
+			  textToBePresentInElement(driver.findElement(By.className("room-name")), 
+					  "Quillacollo"));    
+    assertEquals("Quillacollo",driver.findElement(By.className("room-name")).getText());
   }
 
   @After
